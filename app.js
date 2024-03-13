@@ -1,13 +1,9 @@
 require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const fs = require('node:fs');
-const path = require('node:path');
-// const { Client, Intents, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { Client, GatewayIntentBits } = require("discord.js");
 const { createThread, sendMessage, executeChatCompletetion } = require("./createThread.js")
 const { GPTThread } = require("./models/gptThread.js");
-const { GPTMessage } = require("./models/message.js")
 
 const token = process.env.DISCORD_TOKEN;
 const uri = process.env.MONGO_URI;
@@ -56,7 +52,6 @@ client.on("messageCreate", async (message) => {
         }
         
         // extract message history from the document, turn into array
-
         let oldMessages = [];
         oldMessages = buildMessageArray(result.messages);
         
@@ -64,13 +59,6 @@ client.on("messageCreate", async (message) => {
         msg = msg.trim();
 
         oldMessages.push(generateUserMessage(msg));
-        
-        // Build a way to recieve and send to gpt api for thread
-        // let idk = await sendMessage(msg).then(
-        //     res => message.channel.send(res.message.content)
-        // ).catch(
-        //     err => console.log(err)
-        // );
 
         let idk = await executeChatCompletetion(oldMessages).then(
             res => message.reply(res.message.content)
@@ -140,8 +128,6 @@ async function runMongoClient() {
 }
 
 function generateUserMessage(message) {
-    // let newMessage = new GPTMessage("user", message);
-
     let newMessage = {
         role: "user",
         content: message
@@ -150,8 +136,6 @@ function generateUserMessage(message) {
 }
 
 function generateAssistantMessage(message) {
-    // let newMessage = new GPTMessage("assistant", message);
-
     let newMessage = {
         role: "assistant",
         content: message
@@ -172,20 +156,5 @@ function buildMessageArray(oldMessages){
 
     return msgArray;
 }
-
-
-// const eventsPath = path.join(__dirname, 'events');
-// const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-
-// for (const file of eventFiles) {
-// 	const filePath = path.join(eventsPath, file);
-// 	const event = require(filePath);
-// 	if (event.once) {
-// 		client.once(event.name, (...args) => event.execute(...args));
-// 	} else {
-// 		client.on(event.name, (...args) => event.execute(...args));
-// 	}
-// }
-
 
 client.login(token);
