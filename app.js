@@ -102,7 +102,7 @@ async function updateThread(database, objID, messageAry) {
 async function createDefaultThread(userID, channelID){
 
     let defaultMessage = [
-        { role: "system", content: "You are going to help the user generate a D&D campaign. Don't let the user get off topic. Keep them on track and remind them if needed." }
+        { role: "system", content: "You are going to help the user generate a Table Top RPG campaign. Don't let the user get off topic. Keep them on track and remind them if needed." }
     ]
 
     let defaultThread = new GPTThread(userID, channelID, defaultMessage);
