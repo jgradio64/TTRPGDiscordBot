@@ -73,7 +73,7 @@ client.on("messageCreate", async (message) => {
         // );
 
         let idk = await executeChatCompletetion(oldMessages).then(
-            res => message.channel.send(res.message.content)
+            res => message.reply(res.message.content)
         ).catch(
             err => console.log(err)
         );
