@@ -14,7 +14,6 @@ async function createThread() {
 }
 
 async function sendMessage(message) {
-    console.log(message);
     const completion = await openai.chat.completions.create({
       messages: [
           { role: "system", content: "You are going to help the user generate a D&D campaign. Don't let the user get off topic. Keep them on track and remind them if needed." },

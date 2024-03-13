@@ -1,6 +1,5 @@
 require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require('mongodb');
-
 const { Client, GatewayIntentBits } = require("discord.js");
 const { createThread, sendMessage, executeChatCompletetion } = require("./createThread.js")
 const { GPTThread } = require("./models/gptThread.js");
@@ -118,15 +117,6 @@ async function createDefaultThread(userID, channelID){
     return defaultThread;
 }
 
-async function runMongoClient() {
-    await dbClient.connect();
-    const db = dbClient.db("thread-messages");
-
-    let threadCollection = db.collection("gpt-threads");
-    let results = await threadCollection.findOne();
-    console.log(results);
-}
-
 function generateUserMessage(message) {
     let newMessage = {
         role: "user",
@@ -147,7 +137,6 @@ function buildMessageArray(oldMessages){
     let msgArray = [];
 
     for (msg of oldMessages) {
-        console.log(msg);
         msgArray.push({
             role: msg.role.toString(),
             content: msg.content.toString()
