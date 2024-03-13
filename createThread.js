@@ -5,13 +5,13 @@ const openai = new OpenAI({
     apiKey: process.env.OPEN_AI_KEY
 });
 
-// async function createThread() {
-//     const thread = await openai.beta.threads.create();
+async function createThread() {
+    const thread = await openai.beta.threads.create();
 
-//     console.log(thread);
+    console.log(thread);
 
-//     return thread.id;
-// }
+    return thread.id;
+}
 
 async function sendMessage(message) {
     console.log(message);
@@ -23,7 +23,17 @@ async function sendMessage(message) {
       
       model: "gpt-3.5-turbo",
     });
-  
+
+    return completion.choices[0];
+}
+
+async function executeChatCompletetion(messageArray) {
+    const completion = await openai.chat.completions.create({
+      messages: messageArray,
+      
+      model: "gpt-3.5-turbo",
+    });
+
     return completion.choices[0];
 }
 
@@ -39,6 +49,7 @@ async function sendMessage(message) {
 
 module.exports = {
     createThread,
-    sendMessage
+    sendMessage,
+    executeChatCompletetion
 }
 

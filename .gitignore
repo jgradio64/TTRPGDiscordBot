@@ -1,0 +1,7 @@
+/node_modules
+.env
+/gpt_files
+config.json
+/events
+test.*
+mongoFunctions.js
