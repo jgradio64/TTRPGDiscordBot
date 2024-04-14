@@ -41,3 +41,4 @@ I plan to work on a few more developments to make the bot more efficient and use
 - Improving how users converse with the bot.
 - Allowing users to chat with the bot not just on a server, but also direct messages
 - Adding an archive option so that you do not lose your prior campaign conversations just because you want to make a new one.
+- Implementing functionality to generate a PDF summary for users to review their generated campaign
