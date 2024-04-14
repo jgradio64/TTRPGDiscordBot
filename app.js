@@ -45,22 +45,23 @@ client.on("messageCreate", async (message) => {
         let result = await checkThread(db, message.member.id, message.channelId);
 
         if(result == null) {
-            // Create the default threaed, and then return the created object 
+            // Create the default thread, and then return the created object 
             // update the new thread after querying chatGPT
             result = await createDefaultThread(message.member.id, message.channelId);
         }
         
-        // extract message history from the document, turn into array
+        // Array of old messages is created to send history of conversation to chat GPT
         let oldMessages = [];
+        // Array of new messages is used to update the database record for the conversation.
         let newMessages = [];
 
         oldMessages = buildMessageArray(result.messages);
         
         let msg = message.content.replace("@assistant", "");
         msg = msg.trim();
-        newMessages.push(generateUserMessage(msg))
 
         oldMessages.push(generateUserMessage(msg));
+        newMessages.push(generateUserMessage(msg))
 
         // Used to use the result of the function call here, but unused right now.
         let idk = await executeChatCompletetion(oldMessages).then(
@@ -69,6 +70,11 @@ client.on("messageCreate", async (message) => {
                 
                 // Push the assistant's message to the database before splitting it. 
                 newMessages.push(generateAssistantMessage(text))
+                
+                /*
+                    Discord.js cannot send a message reply with more than 2000 characters.
+                    So loop through the GPT reply and split the message into multiple replies if we need.
+                */
 
                 do {
                     if(text.length > 2000) {
@@ -97,15 +103,16 @@ client.on("messageCreate", async (message) => {
         await updateThread(db, result._id, newMessages);
     }
     else if (message.mentions.has(botID)) {
+        // The ID for a Mentioned user is 22 places long
         let msg = message.content.slice(22);
         msg = msg.trim();
-        // Mentioned ID is 22 places
         
 
         if(msg.toLowerCase() == "delete gpt history") {
             message.reply("Attempting to delete conversation history!");
             // delete the mongoDB history for the user in the channel
             let deletionResult = await deleteThread(db, message.author.id, message.channelId);
+            
             if(deletionResult.acknowledged && deletionResult.deletedCount != 0) {
                 message.reply("History has been successfully deleted!");
             } else {
