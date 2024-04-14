@@ -60,32 +60,35 @@ client.on("messageCreate", async (message) => {
         msg = msg.trim();
         newMessages.push(generateUserMessage(msg))
 
-
         oldMessages.push(generateUserMessage(msg));
 
+        // Used to use the result of the function call here, but unused right now.
         let idk = await executeChatCompletetion(oldMessages).then(
             res => {
                 let text = res.message.content;
                 
+                // Push the assistant's message to the database before splitting it. 
                 newMessages.push(generateAssistantMessage(text))
 
                 do {
                     if(text.length > 2000) {
+                        // Get the last space before the 2000th index in the string, a word isn't cut in half for no reason.
                         let n = text.lastIndexOf(" ", 2000);
 
                         if(n === -1) {
+                            // If for some reason there are no spaces at all, just cut the string at the 2000th index space and send that
+                            // If this ever pops up I need to revisit this.
                             n = 2000;
                         }
 
                         message.reply(text.slice(0, n));
                         text = text.slice(n);
                     } else {
+                        // Execute final reply and make the string an empty string. 
                         message.reply(text);
                         text = "";
                     }
                 } while (text.length > 0);
-
-                // message.reply(res.message.content);
             }
         ).catch(
             err => console.log(err)
