@@ -52,24 +52,44 @@ client.on("messageCreate", async (message) => {
         
         // extract message history from the document, turn into array
         let oldMessages = [];
+        let newMessages = [];
+
         oldMessages = buildMessageArray(result.messages);
         
         let msg = message.content.replace("@assistant", "");
         msg = msg.trim();
+        newMessages.push(generateUserMessage(msg))
+
 
         oldMessages.push(generateUserMessage(msg));
 
         let idk = await executeChatCompletetion(oldMessages).then(
             res => {
-                message.reply(res.message.content);
+                let text = res.message.content;
+                
+                newMessages.push(generateAssistantMessage(text))
+
+                do {
+                    if(text.length > 2000) {
+                        let n = text.lastIndexOf(" ", 2000);
+
+                        if(n === -1) {
+                            n = 2000;
+                        }
+
+                        message.reply(text.slice(0, n));
+                        text = text.slice(n);
+                    } else {
+                        message.reply(text);
+                        text = "";
+                    }
+                } while (text.length > 0);
+
+                // message.reply(res.message.content);
             }
         ).catch(
             err => console.log(err)
         );
-
-        let newMessages = [];
-        newMessages.push(generateUserMessage(msg))
-        newMessages.push(generateAssistantMessage(idk.content))
 
         await updateThread(db, result._id, newMessages);
     }
