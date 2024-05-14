@@ -27,17 +27,17 @@ This is a Discord bot that integrates ChatGPT’s API to help a user generate a 
 
 ### Chatting with the bot
 
-To talk to the bot, you need to start your sentence with `@assistant`, then the rest of your message. It will automatically create a MongoDB object if none exist and save your messages to your server as you converse. There is no script to start a new conversation at the moment.
+To talk to the bot, you need mention the bot by tagging it, then type the rest of your message. It will automatically create a MongoDB object if none exist and save your messages to your server as you converse. There is no script to start a new conversation at the moment.
 
 ### Deleting the Chat History
 
-To delete your conversation with the bot, just type `@basic_gpt_bot delete`, making sure that `@basic_gpt_bot` is a mention of the bot, not just typed text.
+To delete your conversation with the bot, just tag the bot like so: `@basic_gpt_bot delete`, making sure that `@basic_gpt_bot` is a mention of the bot, not just typed text.
 
 ## Planned Developments
 
 I plan to work on a few more developments to make the bot more efficient and user-friendly. The following are my priorities at the moment:
 
-- Refactoring the structure to be better organized.
+- Refactoring the code structure to be better organized.
 - Improving how users converse with the bot.
 - Allowing users to chat with the bot not just on a server, but also direct messages
 - Adding an archive option so that you do not lose your prior campaign conversations just because you want to make a new one.
