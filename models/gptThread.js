@@ -1,4 +1,3 @@
-
 class GPTThread {
     constructor(userID, channelID, messageList) {
         this._id = null;
