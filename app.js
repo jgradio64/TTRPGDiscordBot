@@ -1,7 +1,7 @@
 require('dotenv').config()
 const { MongoClient, ServerApiVersion } = require('mongodb');
 const { Client, GatewayIntentBits } = require("discord.js");
-const { createThread, sendMessage, executeChatCompletetion } = require("./createThread.js")
+const { createThread, sendMessage, executeChatCompletetion } = require("./services/openai/createThread.js")
 const { GPTThread } = require("./models/gptThread.js");
 
 const token = process.env.DISCORD_TOKEN;
@@ -20,11 +20,13 @@ const dbClient = new MongoClient(uri, {
 let db = null;
 let threadCollection = null;
 
+// Connect to mongo db instance
 dbClient.connect().then(() => {
     console.log("connected to db");
     db = dbClient.db("test");
 })
 
+// This is the Discord client
 const client = new Client({ 
 	intents: [
 		GatewayIntentBits.Guilds,
@@ -108,11 +110,11 @@ client.on("messageCreate", async (message) => {
         msg = msg.trim();
         
 
-        if(msg.toLowerCase() == "delete gpt history") {
+        if(msg.toLowerCase() == "delete") {
             message.reply("Attempting to delete conversation history!");
             // delete the mongoDB history for the user in the channel
             let deletionResult = await deleteThread(db, message.author.id, message.channelId);
-            
+
             if(deletionResult.acknowledged && deletionResult.deletedCount != 0) {
                 message.reply("History has been successfully deleted!");
             } else {

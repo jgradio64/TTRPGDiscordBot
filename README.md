@@ -31,7 +31,7 @@ To talk to the bot, you need to start your sentence with `@assistant`, then the 
 
 ### Deleting the Chat History
 
-To delete your conversation with the bot, just type `@basic_gpt_bot delete gpt history`, making sure that `@basic_gpt_bot` is a mention of the bot, not just typed text.
+To delete your conversation with the bot, just type `@basic_gpt_bot delete`, making sure that `@basic_gpt_bot` is a mention of the bot, not just typed text.
 
 ## Planned Developments
 
