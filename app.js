@@ -3,6 +3,7 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const { Client, GatewayIntentBits } = require("discord.js");
 const { executeChatCompletetion } = require("./services/openai/gptThreads.js")
 const { createDefaultThread, checkThread, updateThread, deleteThread } = require("./repositories/threads.js")
+const { generateUserMessage, generateAssistantMessage, buildMessageArray } = require("./services/GPTMessage/gptMessages.js")
 
 const token = process.env.DISCORD_TOKEN;
 const uri = process.env.MONGO_URI;
@@ -124,34 +125,5 @@ client.on("messageCreate", async (message) => {
 
     }
 });
-
-function generateUserMessage(message) {
-    let newMessage = {
-        role: "user",
-        content: message
-    }
-    return newMessage;
-}
-
-function generateAssistantMessage(message) {
-    let newMessage = {
-        role: "assistant",
-        content: message
-    }
-    return newMessage;
-}
-
-function buildMessageArray(oldMessages) {
-    let msgArray = [];
-
-    for (msg of oldMessages) {
-        msgArray.push({
-            role: msg.role.toString(),
-            content: msg.content.toString()
-        });
-    }
-
-    return msgArray;
-}
 
 client.login(token);
