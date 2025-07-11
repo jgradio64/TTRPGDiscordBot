@@ -1,4 +1,4 @@
-# TTRPGDiscordBot 
+# TTRPG Discord Bot 
 ## About
 
 This is a Discord bot that integrates ChatGPT’s API to help a user generate a Tabletop RPG campaign. It uses Discord.js to interact with the Discord API and Node.js to run the program. It also uses MongoDB to hold the message history.
